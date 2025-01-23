@@ -2,14 +2,14 @@ group 'com.github.chinloyal.pusher_client'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.5.20'
+    ext.kotlin_version = '1.8.10' // Update to a more recent Kotlin version
     repositories {
         google()
-        jcenter()
+        mavenCentral() // Replace jcenter with mavenCentral since jcenter is deprecated
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:8.0.2' // Update Gradle plugin version
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -17,7 +17,7 @@ buildscript {
 rootProject.allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral() // Replace jcenter with mavenCentral
     }
 }
 
@@ -25,23 +25,24 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 33 // Update to the latest stable compile SDK version
+
+    namespace "com.github.chinloyal.pusher_client" // Add the required namespace
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
     defaultConfig {
-        minSdkVersion 16
-    }
-    lintOptions {
-        disable 'InvalidPackage'
+        minSdkVersion 21 // Update to a more recent minimum SDK version
     }
 
-    dependencies {
-        implementation "com.pusher:pusher-java-client:2.2.5"
+    lintOptions {
+        disable 'InvalidPackage'
     }
 }
 
 dependencies {
+    implementation "com.pusher:pusher-java-client:2.4.4"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
