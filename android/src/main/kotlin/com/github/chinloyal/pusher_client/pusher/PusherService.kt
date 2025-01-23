@@ -4,7 +4,6 @@ import android.util.Log
 import com.github.chinloyal.pusher_client.core.contracts.MChannel
 import com.github.chinloyal.pusher_client.core.utils.JsonEncodedConnectionFactory
 import com.github.chinloyal.pusher_client.pusher.listeners.*
-import com.google.gson.Gson
 import com.pusher.client.Pusher
 import com.pusher.client.PusherOptions
 import com.pusher.client.connection.ConnectionState
@@ -87,7 +86,11 @@ class PusherService : MChannel {
             if (!options.isNull("auth")) {
                 val auth: JSONObject = options.getJSONObject("auth")
                 val endpoint: String = auth.getString("endpoint")
-                val headersMap: Map<String, String> = Gson().fromJson<Map<String, String>>(auth.getString("headers"), Map::class.java)
+                val headersMap = mutableMapOf<String, String>()
+                val headersJson = JSONObject(auth.getString("headers"))
+                headersJson.keys().forEach { key ->
+                    headersMap[key] = headersJson.getString(key)
+                }
                 val encodedConnectionFactory = if (headersMap.containsValue("application/json"))
                     JsonEncodedConnectionFactory() else UrlEncodedConnectionFactory()
 
