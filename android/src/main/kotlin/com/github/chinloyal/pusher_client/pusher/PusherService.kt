@@ -107,11 +107,8 @@ class PusherService : MChannel {
 
             pusherOptions.setHost(options.get("host").asString)
 
-            if(!options.isNull("cluster")) {
-                pusherOptions.setCluster(options.get("cluster").asString)
-            }
             if (options.has("cluster") && !options.get("cluster").isJsonNull) {
-                val auth = options.getAsJsonObject("cluster")
+                pusherOptions.setCluster(options.get("cluster").asString)
             }
 
 

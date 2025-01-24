@@ -18,7 +18,7 @@ class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), Pr
         val eventData = JsonObject()
         eventData.addProperty("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
         eventData.addProperty("channel", channelName)
-        eventData.addProperty("user_id", JsonNull.INSTANCE)
+        eventData.add("user_id", JsonNull.INSTANCE)
         eventData.addProperty("data", users.toString())
 
         this.onEvent(PusherEvent(eventData))
@@ -29,7 +29,7 @@ class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), Pr
         eventData.addProperty("event", Constants.MEMBER_REMOVED.value)
         eventData.addProperty("channel", channelName)
         eventData.addProperty("user_id", user.id)
-        eventData.addProperty("data", JsonNull.INSTANCE)
+        eventData.add("data", JsonNull.INSTANCE)
 
         this.onEvent(PusherEvent(eventData))
     }
@@ -39,7 +39,7 @@ class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), Pr
         eventData.addProperty("event", Constants.MEMBER_ADDED.value)
         eventData.addProperty("channel", channelName)
         eventData.addProperty("user_id", user.id)
-        eventData.addProperty("data", JsonNull.INSTANCE)
+        eventData.add("data", JsonNull.INSTANCE)
 
         this.onEvent(PusherEvent(eventData))
     }
@@ -53,8 +53,8 @@ class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), Pr
         val eventData = JsonObject()
         eventData.addProperty("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
         eventData.addProperty("channel", channelName)
-        eventData.addProperty("user_id", JsonNull.INSTANCE)
-        eventData.addProperty("data", JsonNull.INSTANCE)
+        eventData.add("user_id", JsonNull.INSTANCE)
+        eventData.add("data", JsonNull.INSTANCE)
 
         this.onEvent(PusherEvent(eventData))
         PusherService.debugLog("[PRESENCE] Subscribed: $channelName")
