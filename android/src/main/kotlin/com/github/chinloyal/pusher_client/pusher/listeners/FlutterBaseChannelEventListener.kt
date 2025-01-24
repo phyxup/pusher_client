@@ -16,12 +16,11 @@ open class FlutterBaseChannelEventListener: ChannelEventListener {
     override fun onEvent(event: PusherEvent) {
         Handler(Looper.getMainLooper()).post {
             try {
-                val eventJson = JSONObject(mapOf(
-                        "channelName" to event.channelName,
-                        "eventName" to event.eventName,
-                        "userId" to event.userId,
-                        "data" to event.data
-                ))
+                val eventJson = JSONObject()
+                eventJson.put("channelName", event.channelName)
+                eventJson.put("eventName", event.eventName)
+                eventJson.put("userId", event.userId) // Handles null
+                eventJson.put("data", event.data) // Handles null
 
                 eventStreamJson.put("pusherEvent", eventJson)
 
@@ -38,12 +37,13 @@ open class FlutterBaseChannelEventListener: ChannelEventListener {
     }
 
     override fun onSubscriptionSucceeded(channelName: String) {
-        this.onEvent(PusherEvent(mapOf(
-                "event" to Constants.SUBSCRIPTION_SUCCEEDED.value,
-                "channel" to channelName,
-                "user_id" to null,
-                "data" to null
-        )))
+        val eventData = JSONObject()
+        eventData.put("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
+        eventData.put("channel", channelName)
+        eventData.put("user_id", null)
+        eventData.put("data", null)
+
+        this.onEvent(PusherEvent(eventData.toString()))
         debugLog("[PUBLIC] Subscribed: $channelName")
 
     }

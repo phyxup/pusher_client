@@ -19,12 +19,13 @@ class FlutterPrivateChannelEventListener: FlutterBaseChannelEventListener(), Pri
     }
 
     override fun onSubscriptionSucceeded(channelName: String) {
-        this.onEvent(PusherEvent(mapOf(
-                "event" to Constants.SUBSCRIPTION_SUCCEEDED.value,
-                "channel" to channelName,
-                "user_id" to null,
-                "data" to null
-        )))
+        val eventData = JSONObject()
+        eventData.put("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
+        eventData.put("channel", channelName)
+        eventData.put("user_id", null)
+        eventData.put("data", null)
+
+        this.onEvent(PusherEvent(eventData.toString()))
         PusherService.debugLog("[PRIVATE] Subscribed: $channelName")
     }
 }
