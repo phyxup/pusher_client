@@ -8,16 +8,16 @@ import com.github.chinloyal.pusher_client.pusher.PusherService.Companion.enableL
 import com.github.chinloyal.pusher_client.pusher.PusherService.Companion.errorLog
 import com.pusher.client.connection.ConnectionEventListener
 import com.pusher.client.connection.ConnectionStateChange
-import org.json.JSONObject
+import com.google.gson.JsonObject
 import java.lang.Exception
 
 class ConnectionListener: ConnectionEventListener {
-    val eventStreamJson = JSONObject();
+    val eventStreamJson = JsonObject();
 
     override fun onConnectionStateChange(change: ConnectionStateChange) {
         Handler(Looper.getMainLooper()).post {
             try {
-                val connectionStateChange = JSONObject(mapOf(
+                val connectionStateChange = JsonObject(mapOf(
                         "currentState" to change.currentState.toString(),
                         "previousState" to change.previousState.toString()
                 ))
@@ -39,7 +39,7 @@ class ConnectionListener: ConnectionEventListener {
     override fun onError(message: String, code: String?, ex: Exception?) {
         Handler(Looper.getMainLooper()).post {
             try {
-                val connectionError = JSONObject(mapOf(
+                val connectionError = JsonObject(mapOf(
                         "message" to message,
                         "code" to code,
                         "exception" to ex?.message

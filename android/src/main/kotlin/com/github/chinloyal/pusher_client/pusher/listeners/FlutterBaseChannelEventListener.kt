@@ -8,7 +8,6 @@ import com.github.chinloyal.pusher_client.pusher.PusherService.Companion.eventSi
 import com.pusher.client.channel.ChannelEventListener
 import com.pusher.client.channel.PusherEvent
 import java.lang.Exception
-import org.json.JSONObject
 import com.google.gson.JsonObject
 
 
@@ -18,7 +17,7 @@ open class FlutterBaseChannelEventListener: ChannelEventListener {
     override fun onEvent(event: PusherEvent) {
         Handler(Looper.getMainLooper()).post {
             try {
-                val eventJson = JSONObject()
+                val eventJson = JsonObject()
                 eventJson.addProperty("channelName", event.channelName)
                 eventJson.addProperty("eventName", event.eventName)
                 eventJson.addProperty("userId", event.userId) // Handles null

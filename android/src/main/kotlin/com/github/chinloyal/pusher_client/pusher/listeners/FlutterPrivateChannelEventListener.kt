@@ -7,7 +7,7 @@ import com.github.chinloyal.pusher_client.pusher.PusherService.Companion.errorLo
 import com.pusher.client.channel.PrivateChannelEventListener
 import com.pusher.client.channel.PusherEvent
 import java.lang.Exception
-import org.json.JSONObject
+import com.google.gson.JsonObject
 
 class FlutterPrivateChannelEventListener: FlutterBaseChannelEventListener(), PrivateChannelEventListener {
     companion object {
@@ -20,7 +20,7 @@ class FlutterPrivateChannelEventListener: FlutterBaseChannelEventListener(), Pri
     }
 
     override fun onSubscriptionSucceeded(channelName: String) {
-        val eventData = JSONObject()
+        val eventData = JsonObject()
         eventData.put("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
         eventData.put("channel", channelName)
         eventData.put("user_id", null)
