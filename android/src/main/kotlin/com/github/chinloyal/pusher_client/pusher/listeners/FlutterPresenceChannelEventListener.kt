@@ -20,7 +20,7 @@ class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), Pr
         eventData.put("user_id", null)
         eventData.put("data", users.toString())
 
-        this.onEvent(PusherEvent(eventData.toString()))
+        this.onEvent(PusherEvent(eventData))
     }
 
     override fun userUnsubscribed(channelName: String, user: User) {
@@ -30,7 +30,7 @@ class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), Pr
         eventData.put("user_id", user.id)
         eventData.put("data", null)
 
-        this.onEvent(PusherEvent(eventData.toString()))
+        this.onEvent(PusherEvent(eventData))
     }
 
     override fun userSubscribed(channelName: String, user: User) {
@@ -40,7 +40,7 @@ class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), Pr
         eventData.put("user_id", user.id)
         eventData.put("data", null)
 
-        this.onEvent(PusherEvent(eventData.toString()))
+        this.onEvent(PusherEvent(eventData))
     }
 
     override fun onAuthenticationFailure(message: String, e: Exception) {
@@ -55,7 +55,7 @@ class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), Pr
         eventData.put("user_id", null)
         eventData.put("data", null)
 
-        this.onEvent(PusherEvent(eventData.toString()))
+        this.onEvent(PusherEvent(eventData))
         PusherService.debugLog("[PRESENCE] Subscribed: $channelName")
     }
 }

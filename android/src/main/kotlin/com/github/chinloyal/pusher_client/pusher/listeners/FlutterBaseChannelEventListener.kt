@@ -43,7 +43,7 @@ open class FlutterBaseChannelEventListener: ChannelEventListener {
         eventData.put("user_id", null)
         eventData.put("data", null)
 
-        this.onEvent(PusherEvent(eventData.toString()))
+        this.onEvent(PusherEvent(eventData))
         debugLog("[PUBLIC] Subscribed: $channelName")
 
     }

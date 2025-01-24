@@ -30,7 +30,7 @@ class FlutterPrivateEncryptedChannelEventListener: FlutterBaseChannelEventListen
         eventData.put("user_id", null)
         eventData.put("data", null)
 
-        this.onEvent(PusherEvent(eventData.toString()))
+        this.onEvent(PusherEvent(eventData))
         PusherService.debugLog("[PRIVATE-ENCRYPTED] Subscribed: $channelName")
     }
 }

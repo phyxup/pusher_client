@@ -26,7 +26,7 @@ class FlutterPrivateChannelEventListener: FlutterBaseChannelEventListener(), Pri
         eventData.put("user_id", null)
         eventData.put("data", null)
 
-        this.onEvent(PusherEvent(eventData.toString()))
+        this.onEvent(PusherEvent(eventData))
         PusherService.debugLog("[PRIVATE] Subscribed: $channelName")
     }
 }
