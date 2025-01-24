@@ -15,8 +15,8 @@ import io.flutter.plugin.common.EventChannel.EventSink
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.Result
-import org.json.JSONObject
 import java.lang.Exception
+import com.google.gson.JsonObject
 
 
 const val CHANNEL_NAME = "com.github.chinloyal/pusher_client"
@@ -75,22 +75,25 @@ class PusherService : MChannel {
 
     private fun init(call: MethodCall, result: Result) {
         // toString works because this is json encoded in dart
-        val args = JSONObject(call.arguments.toString())
-        val initArgs: JSONObject = args.getJSONObject("initArgs")
-        enableLogging = initArgs.getBoolean("enableLogging")
+        val args = JsonObject()
+        args.addProperty("initArgs", call.arguments.toString())
+        val initArgs = args.getAsJsonObject("initArgs")
+        enableLogging = initArgs.get("enableLogging").asBoolean
+
 
         if(_pusherInstance == null) {
-            val options: JSONObject = args.getJSONObject("pusherOptions")
+            val options: JsonObject = args.getAsJsonObject("pusherOptions")
             val pusherOptions = PusherOptions()
 
             if (!options.isNull("auth")) {
-                val auth: JSONObject = options.getJSONObject("auth")
+                val auth: JsonObject = options.getAsJsonObject("auth")
                 val endpoint: String = auth.getString("endpoint")
                 val headersMap = mutableMapOf<String, String>()
-                val headersJson = JSONObject(auth.getString("headers"))
-                headersJson.keys().forEach { key ->
-                    headersMap[key] = headersJson.getString(key)
+                val headersJson = JsonObject()
+                auth.get("headers").asJsonObject.entrySet().forEach { entry ->
+                    headersMap[entry.key] = entry.value.asString
                 }
+
                 val encodedConnectionFactory = if (headersMap.containsValue("application/json"))
                     JsonEncodedConnectionFactory() else UrlEncodedConnectionFactory()
 
@@ -100,21 +103,21 @@ class PusherService : MChannel {
                 pusherOptions.authorizer = authorizer
             }
 
-            pusherOptions.setHost(options.getString("host"))
+            pusherOptions.setHost(options.get("host").asString)
 
             if(!options.isNull("cluster")) {
-                pusherOptions.setCluster(options.getString("cluster"))
+                pusherOptions.setCluster(options.get("cluster").asString)
             }
 
-            pusherOptions.activityTimeout = options.getLong("activityTimeout")
-            pusherOptions.pongTimeout = options.getLong("pongTimeout")
-            pusherOptions.maxReconnectionAttempts = options.getInt("maxReconnectionAttempts")
-            pusherOptions.maxReconnectGapInSeconds = options.getInt("maxReconnectGapInSeconds")
-            pusherOptions.setWsPort(options.getInt("wsPort"))
-            pusherOptions.setWssPort(options.getInt("wssPort"))
-            pusherOptions.isUseTLS = options.getBoolean("encrypted")
+            pusherOptions.activityTimeout = options.get("activityTimeout").asLong
+            pusherOptions.pongTimeout = options.get("pongTimeout").asLong
+            pusherOptions.maxReconnectionAttempts = options.get("maxReconnectionAttempts").asInt
+            pusherOptions.maxReconnectGapInSeconds = options.get("maxReconnectGapInSeconds").asInt
+            pusherOptions.setWsPort(options.get("wsPort").asInt)
+            pusherOptions.setWssPort(options.get("wssPort").asInt)
+            pusherOptions.isUseTLS = options.get("encrypted").asBoolean
 
-            _pusherInstance = Pusher(args.getString("appKey"), pusherOptions)
+            _pusherInstance = Pusher(args.get("appKey").asString, pusherOptions)
 
             debugLog("Pusher initialized")
         }
@@ -140,8 +143,12 @@ class PusherService : MChannel {
     private fun subscribe(call: MethodCall, result: Result) {
         try {
             val src = call.arguments as Map<String, Any>
-            val args = JSONObject(src)
-            val channelName: String = args.getString("channelName")
+            val args = JsonObject()
+            src.forEach { (key, value) ->
+                args.addProperty(key, value.toString())
+            }
+
+            val channelName: String = args.get("channelName").asString
 
             when {
                 channelName.startsWith(PRIVATE_ENCRYPTED_PREFIX) -> {
@@ -177,8 +184,11 @@ class PusherService : MChannel {
     private fun unsubscribe(call: MethodCall, result: Result) {
         try {
             val src = call.arguments as Map<String, Any>
-            val args = JSONObject(src);
-            val channelName = args.getString("channelName")
+            val args = JsonObject()
+            src.forEach { (key, value) ->
+                args.addProperty(key, value.toString())
+            }
+            val channelName = args.get("channelName").asString
 
             _pusherInstance?.unsubscribe(channelName)
 
@@ -197,9 +207,12 @@ class PusherService : MChannel {
     private fun bind(call: MethodCall, result: Result) {
         try {
             val src = call.arguments as Map<String, Any>
-            val args = JSONObject(src)
-            val channelName: String = args.getString("channelName")
-            val eventName: String = args.getString("eventName")
+            val args = JsonObject()
+            src.forEach { (key, value) ->
+                args.addProperty(key, value.toString())
+            }
+            val channelName: String = args.get("channelName").asString
+            val eventName: String = args.get("eventName").asString
 
             when {
                 channelName.startsWith(PRIVATE_ENCRYPTED_PREFIX) -> {
@@ -232,9 +245,12 @@ class PusherService : MChannel {
     private fun unbind(call: MethodCall, result: Result) {
         try {
             val src = call.arguments as Map<String, Any>
-            val args = JSONObject(src)
-            val channelName: String = args.getString("channelName")
-            val eventName: String = args.getString("eventName")
+            val args = JsonObject()
+            src.forEach { (key, value) ->
+                args.addProperty(key, value.toString())
+            }
+            val channelName: String = args.get("channelName").asString
+            val eventName: String = args.get("eventName").asString
 
             when {
                 channelName.startsWith(PRIVATE_ENCRYPTED_PREFIX) -> {
@@ -267,10 +283,13 @@ class PusherService : MChannel {
     private fun trigger(call: MethodCall, result: Result) {
         try {
             // toString works because this is json encoded in dart
-            val args = JSONObject(call.arguments.toString())
-            val eventName: String = args.getString("eventName")
-            val data: String = args.getString("data")
-            val channelName: String = args.getString("channelName")
+            val args = JsonObject()
+            args.addProperty("eventName", call.argument<String>("eventName"))
+            args.addProperty("data", call.argument<String>("data"))
+            args.addProperty("channelName", call.argument<String>("channelName"))
+            val eventName: String = args.get("eventName").asString
+            val data: String = args.get("data").asString
+            val channelName: String = args.get("channelName").asString
             val errorMessage = "Trigger can only be called on private and presence channels."
             when {
                 channelName.startsWith(PRIVATE_ENCRYPTED_PREFIX) -> {

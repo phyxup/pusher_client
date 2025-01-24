@@ -17,14 +17,13 @@ class ConnectionListener: ConnectionEventListener {
     override fun onConnectionStateChange(change: ConnectionStateChange) {
         Handler(Looper.getMainLooper()).post {
             try {
-                val connectionStateChange = JsonObject(mapOf(
-                        "currentState" to change.currentState.toString(),
-                        "previousState" to change.previousState.toString()
-                ))
+                val connectionStateChange = JsonObject()
+                connectionStateChange.addProperty("currentState", change.currentState.toString())
+                connectionStateChange.addProperty("previousState", change.previousState.toString())
 
                 debugLog("[${change.currentState.toString()}]")
 
-                eventStreamJson.put("connectionStateChange", connectionStateChange)
+                eventStreamJson.add("connectionStateChange", connectionStateChange)
 
                 PusherService.eventSink?.success(eventStreamJson.toString())
             } catch (e: Exception) {
@@ -39,15 +38,14 @@ class ConnectionListener: ConnectionEventListener {
     override fun onError(message: String, code: String?, ex: Exception?) {
         Handler(Looper.getMainLooper()).post {
             try {
-                val connectionError = JsonObject(mapOf(
-                        "message" to message,
-                        "code" to code,
-                        "exception" to ex?.message
-                ))
+                val connectionError = JsonObject()
+                connectionError.addProperty("message", message,)
+                connectionError.addProperty("code", code)
+                connectionError.addProperty("exception", ex?.message)
 
                 debugLog("[ON_ERROR]: message: $message, code: $code")
 
-                eventStreamJson.put("connectionError", connectionError)
+                eventStreamJson.add("connectionError", connectionError)
                 PusherService.eventSink?.success(eventStreamJson.toString())
             } catch (e: Exception) {
                 e.message?.let { errorLog(it) }

@@ -15,30 +15,30 @@ class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), Pr
 
     override fun onUsersInformationReceived(channelName: String, users: MutableSet<User>) {
         val eventData = JsonObject()
-        eventData.put("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
-        eventData.put("channel", channelName)
-        eventData.put("user_id", null)
-        eventData.put("data", users.toString())
+        eventData.addProperty("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
+        eventData.addProperty("channel", channelName)
+        eventData.addProperty("user_id", null)
+        eventData.addProperty("data", users.toString())
 
         this.onEvent(PusherEvent(eventData))
     }
 
     override fun userUnsubscribed(channelName: String, user: User) {
         val eventData = JsonObject()
-        eventData.put("event", Constants.MEMBER_REMOVED.value)
-        eventData.put("channel", channelName)
-        eventData.put("user_id", user.id)
-        eventData.put("data", null)
+        eventData.addProperty("event", Constants.MEMBER_REMOVED.value)
+        eventData.addProperty("channel", channelName)
+        eventData.addProperty("user_id", user.id)
+        eventData.addProperty("data", null)
 
         this.onEvent(PusherEvent(eventData))
     }
 
     override fun userSubscribed(channelName: String, user: User) {
         val eventData = JsonObject()
-        eventData.put("event", Constants.MEMBER_ADDED.value)
-        eventData.put("channel", channelName)
-        eventData.put("user_id", user.id)
-        eventData.put("data", null)
+        eventData.addProperty("event", Constants.MEMBER_ADDED.value)
+        eventData.addProperty("channel", channelName)
+        eventData.addProperty("user_id", user.id)
+        eventData.addProperty("data", null)
 
         this.onEvent(PusherEvent(eventData))
     }
@@ -50,10 +50,10 @@ class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), Pr
 
     override fun onSubscriptionSucceeded(channelName: String) {
         val eventData = JsonObject()
-        eventData.put("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
-        eventData.put("channel", channelName)
-        eventData.put("user_id", null)
-        eventData.put("data", null)
+        eventData.addProperty("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
+        eventData.addProperty("channel", channelName)
+        eventData.addProperty("user_id", null)
+        eventData.addProperty("data", null)
 
         this.onEvent(PusherEvent(eventData))
         PusherService.debugLog("[PRESENCE] Subscribed: $channelName")

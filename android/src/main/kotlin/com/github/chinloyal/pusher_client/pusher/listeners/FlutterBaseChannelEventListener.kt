@@ -23,7 +23,7 @@ open class FlutterBaseChannelEventListener: ChannelEventListener {
                 eventJson.addProperty("userId", event.userId) // Handles null
                 eventJson.addProperty("data", event.data) // Handles null
 
-                eventStreamJson.addProperty("pusherEvent", eventJson)
+                eventStreamJson.add("pusherEvent", eventJson)
 
                 eventSink?.success(eventStreamJson.toString())
                 debugLog("""
