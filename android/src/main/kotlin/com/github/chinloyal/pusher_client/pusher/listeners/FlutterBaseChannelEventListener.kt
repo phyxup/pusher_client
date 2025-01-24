@@ -7,8 +7,8 @@ import com.github.chinloyal.pusher_client.pusher.PusherService.Companion.debugLo
 import com.github.chinloyal.pusher_client.pusher.PusherService.Companion.eventSink
 import com.pusher.client.channel.ChannelEventListener
 import com.pusher.client.channel.PusherEvent
-import org.json.JSONObject
 import java.lang.Exception
+import org.json.JSONObject
 
 open class FlutterBaseChannelEventListener: ChannelEventListener {
     private val eventStreamJson = JSONObject();

@@ -7,6 +7,7 @@ import com.github.chinloyal.pusher_client.pusher.PusherService.Companion.errorLo
 import com.pusher.client.channel.PrivateEncryptedChannelEventListener
 import com.pusher.client.channel.PusherEvent
 import java.lang.Exception
+import org.json.JSONObject
 
 class FlutterPrivateEncryptedChannelEventListener: FlutterBaseChannelEventListener(), PrivateEncryptedChannelEventListener {
     companion object {

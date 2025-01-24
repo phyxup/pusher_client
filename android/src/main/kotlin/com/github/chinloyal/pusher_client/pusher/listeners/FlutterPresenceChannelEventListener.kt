@@ -6,6 +6,7 @@ import com.pusher.client.channel.PresenceChannelEventListener
 import com.pusher.client.channel.PusherEvent
 import com.pusher.client.channel.User
 import java.lang.Exception
+import org.json.JSONObject
 
 class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), PresenceChannelEventListener {
     companion object {
