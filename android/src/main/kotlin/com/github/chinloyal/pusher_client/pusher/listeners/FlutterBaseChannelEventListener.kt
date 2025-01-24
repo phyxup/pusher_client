@@ -9,20 +9,22 @@ import com.pusher.client.channel.ChannelEventListener
 import com.pusher.client.channel.PusherEvent
 import java.lang.Exception
 import org.json.JSONObject
+import com.google.gson.JsonObject
+
 
 open class FlutterBaseChannelEventListener: ChannelEventListener {
-    private val eventStreamJson = JSONObject();
+    private val eventStreamJson = JsonObject();
 
     override fun onEvent(event: PusherEvent) {
         Handler(Looper.getMainLooper()).post {
             try {
                 val eventJson = JSONObject()
-                eventJson.put("channelName", event.channelName)
-                eventJson.put("eventName", event.eventName)
-                eventJson.put("userId", event.userId) // Handles null
-                eventJson.put("data", event.data) // Handles null
+                eventJson.addProperty("channelName", event.channelName)
+                eventJson.addProperty("eventName", event.eventName)
+                eventJson.addProperty("userId", event.userId) // Handles null
+                eventJson.addProperty("data", event.data) // Handles null
 
-                eventStreamJson.put("pusherEvent", eventJson)
+                eventStreamJson.addProperty("pusherEvent", eventJson)
 
                 eventSink?.success(eventStreamJson.toString())
                 debugLog("""
@@ -37,11 +39,11 @@ open class FlutterBaseChannelEventListener: ChannelEventListener {
     }
 
     override fun onSubscriptionSucceeded(channelName: String) {
-        val eventData = JSONObject()
-        eventData.put("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
-        eventData.put("channel", channelName)
-        eventData.put("user_id", null)
-        eventData.put("data", null)
+        val eventData = JsonObject()
+        eventData.addProperty("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
+        eventData.addProperty("channel", channelName)
+        eventData.addProperty("user_id", null)
+        eventData.addProperty("data", null)
 
         this.onEvent(PusherEvent(eventData))
         debugLog("[PUBLIC] Subscribed: $channelName")
