@@ -23,8 +23,8 @@ class FlutterPrivateChannelEventListener: FlutterBaseChannelEventListener(), Pri
         val eventData = JsonObject()
         eventData.addProperty("event", Constants.SUBSCRIPTION_SUCCEEDED.value)
         eventData.addProperty("channel", channelName)
-        eventData.addProperty("user_id", null)
-        eventData.addProperty("data", null)
+        eventData.addProperty("user_id", JsonNull.INSTANCE)
+        eventData.addProperty("data", JsonNull.INSTANCE)
 
         this.onEvent(PusherEvent(eventData))
         PusherService.debugLog("[PRIVATE] Subscribed: $channelName")

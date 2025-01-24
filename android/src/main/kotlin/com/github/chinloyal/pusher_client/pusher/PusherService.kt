@@ -85,9 +85,9 @@ class PusherService : MChannel {
             val options: JsonObject = args.getAsJsonObject("pusherOptions")
             val pusherOptions = PusherOptions()
 
-            if (!options.isNull("auth")) {
-                val auth: JsonObject = options.getAsJsonObject("auth")
-                val endpoint: String = auth.getString("endpoint")
+            if (options.has("auth") && !options.get("auth").isJsonNull) {
+                val auth = options.getAsJsonObject("auth")
+                val endpoint: String = auth.get("endpoint").asString
                 val headersMap = mutableMapOf<String, String>()
                 val headersJson = JsonObject()
                 auth.get("headers").asJsonObject.entrySet().forEach { entry ->
