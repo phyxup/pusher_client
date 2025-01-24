@@ -17,6 +17,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.Result
 import java.lang.Exception
 import com.google.gson.JsonObject
+import com.google.gson.JsonNull
+
 
 
 const val CHANNEL_NAME = "com.github.chinloyal/pusher_client"
@@ -108,6 +110,10 @@ class PusherService : MChannel {
             if(!options.isNull("cluster")) {
                 pusherOptions.setCluster(options.get("cluster").asString)
             }
+            if (options.has("cluster") && !options.get("cluster").isJsonNull) {
+                val auth = options.getAsJsonObject("cluster")
+            }
+
 
             pusherOptions.activityTimeout = options.get("activityTimeout").asLong
             pusherOptions.pongTimeout = options.get("pongTimeout").asLong

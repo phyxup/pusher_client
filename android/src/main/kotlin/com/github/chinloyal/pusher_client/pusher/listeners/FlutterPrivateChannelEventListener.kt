@@ -8,6 +8,7 @@ import com.pusher.client.channel.PrivateChannelEventListener
 import com.pusher.client.channel.PusherEvent
 import java.lang.Exception
 import com.google.gson.JsonObject
+import com.google.gson.JsonNull
 
 class FlutterPrivateChannelEventListener: FlutterBaseChannelEventListener(), PrivateChannelEventListener {
     companion object {

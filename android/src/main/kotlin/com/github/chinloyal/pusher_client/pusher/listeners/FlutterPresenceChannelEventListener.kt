@@ -7,6 +7,7 @@ import com.pusher.client.channel.PusherEvent
 import com.pusher.client.channel.User
 import java.lang.Exception
 import com.google.gson.JsonObject
+import com.google.gson.JsonNull
 
 class FlutterPresenceChannelEventListener: FlutterBaseChannelEventListener(), PresenceChannelEventListener {
     companion object {

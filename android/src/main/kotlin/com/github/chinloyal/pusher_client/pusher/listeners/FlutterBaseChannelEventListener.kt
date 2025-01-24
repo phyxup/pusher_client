@@ -9,6 +9,7 @@ import com.pusher.client.channel.ChannelEventListener
 import com.pusher.client.channel.PusherEvent
 import java.lang.Exception
 import com.google.gson.JsonObject
+import com.google.gson.JsonNull
 
 
 open class FlutterBaseChannelEventListener: ChannelEventListener {
