@@ -30,6 +30,9 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
+    namespace = "com.github.chinloyal.pusher_client"
+
     defaultConfig {
         minSdkVersion 16
     }
@@ -39,6 +42,10 @@ android {
 
     dependencies {
         implementation "com.pusher:pusher-java-client:2.2.5"
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
